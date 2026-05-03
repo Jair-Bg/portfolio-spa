@@ -4,12 +4,20 @@ import './Home.css'
 
 function Home() {
   const [projects, setProjects] = useState([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     fetch('/api/projects')
       .then(res => res.json())
       .then(data => setProjects(data))
   }, [])
+
+  const filtered = projects.filter(p =>
+  p.title.toLowerCase().includes(search.toLowerCase()) ||
+  p.description.toLowerCase().includes(search.toLowerCase()) ||
+  p.category.toLowerCase().includes(search.toLowerCase()) ||
+  p.techStack.some(t => t.toLowerCase().includes(search.toLowerCase()))
+  )
 
   return (
     <div className="home">
@@ -23,13 +31,23 @@ function Home() {
         </p>
       </div>
 
-      {projects.length === 0 ? (
+      <div className="search-wrap">
+        <input
+       type="text"
+       className="search-input"
+       placeholder="Search by title, tech, category..."
+       value={search}
+       onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+
+      {filtered.length === 0 ? (
         <div className="empty-state">
           <p>No projects yet. <a href="/add">Add your first one →</a></p>
         </div>
       ) : (
         <div className="projects-grid">
-          {projects.map(project => (
+          {filtered.map(project => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>
