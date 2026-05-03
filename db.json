@@ -1,0 +1,34 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "E-Commerce Dashboard",
+      "description": "A full-stack dashboard for managing products, orders, and analytics.",
+      "techStack": ["React", "Node.js", "MongoDB"],
+      "liveUrl": "https://example.com",
+      "repoUrl": "https://github.com",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+      "category": "Full Stack"
+    },
+    {
+      "id": 2,
+      "title": "Weather App",
+      "description": "Real-time weather forecast app using the OpenWeather API with 7-day outlook.",
+      "techStack": ["React", "CSS", "REST API"],
+      "liveUrl": "https://example.com",
+      "repoUrl": "https://github.com",
+      "image": "https://images.unsplash.com/photo-1504608524841-42584120d693?w=600&q=80",
+      "category": "Frontend"
+    },
+    {
+      "id": 3,
+      "title": "Task Manager",
+      "description": "Collaborative Kanban board with drag-and-drop task management and user auth.",
+      "techStack": ["React", "Firebase", "Tailwind"],
+      "liveUrl": "https://example.com",
+      "repoUrl": "https://github.com",
+      "image": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&q=80",
+      "category": "Full Stack"
+    }
+  ]
+}
