@@ -64,3 +64,27 @@ button { cursor: pointer; font-family: var(--font-body); }
   border: 1px solid var(--border);
 }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.status-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 5rem 0;
+  color: var(--text-muted);
+}
+
+.status-state.error { color: #ff5c5c; }
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

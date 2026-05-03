@@ -1,22 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ProjectCard from '../components/ProjectCard'
 import './Home.css'
 
-function Home() {
-  const [projects, setProjects] = useState([])
+function Home({ projects, loading, error }) {
   const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    fetch('/api/projects')
-      .then(res => res.json())
-      .then(data => setProjects(data))
-  }, [])
-
   const filtered = projects.filter(p =>
-  p.title.toLowerCase().includes(search.toLowerCase()) ||
-  p.description.toLowerCase().includes(search.toLowerCase()) ||
-  p.category.toLowerCase().includes(search.toLowerCase()) ||
-  p.techStack.some(t => t.toLowerCase().includes(search.toLowerCase()))
+    p.title.toLowerCase().includes(search.toLowerCase()) ||
+    p.description.toLowerCase().includes(search.toLowerCase()) ||
+    p.category.toLowerCase().includes(search.toLowerCase()) ||
+    p.techStack.some(t => t.toLowerCase().includes(search.toLowerCase()))
   )
 
   return (
@@ -33,19 +26,40 @@ function Home() {
 
       <div className="search-wrap">
         <input
-       type="text"
-       className="search-input"
-       placeholder="Search by title, tech, category..."
-       value={search}
-       onChange={e => setSearch(e.target.value)}
+          type="text"
+          className="search-input"
+          placeholder="Search by title, tech, category..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
         />
       </div>
 
-      {filtered.length === 0 ? (
+      {loading && (
+        <div className="status-state">
+          <div className="spinner" />
+          <p>Loading projects...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="status-state error">
+          <p>⚠️ {error}. Make sure json-server is running.</p>
+        </div>
+      )}
+
+      {!loading && !error && filtered.length === 0 && search && (
+        <div className="empty-state">
+          <p>No projects match "<strong>{search}</strong>"</p>
+        </div>
+      )}
+
+      {!loading && !error && filtered.length === 0 && !search && (
         <div className="empty-state">
           <p>No projects yet. <a href="/add">Add your first one →</a></p>
         </div>
-      ) : (
+      )}
+
+      {!loading && !error && filtered.length > 0 && (
         <div className="projects-grid">
           {filtered.map(project => (
             <ProjectCard key={project.id} project={project} />

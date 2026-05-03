@@ -1,23 +1,23 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import './ProjectDetail.css'
 
-function ProjectDetail() {
+function ProjectDetail({ projects }) {
   const { id } = useParams()
   const navigate = useNavigate()
-  const [project, setProject] = useState(null)
 
-  useEffect(() => {
-    fetch(`/api/projects/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Not found')
-        return res.json()
-      })
-      .then(data => setProject(data))
-      .catch(() => navigate('/'))
-  }, [id, navigate])
+  const project = projects.find(p => String(p.id) === String(id))
 
-  if (!project) return null
+  if (projects.length > 0 && !project) {
+    navigate('/')
+    return null
+  }
+
+  if (!project) return (
+    <div className="status-state">
+      <div className="spinner" />
+      <p>Loading project...</p>
+    </div>
+  )
 
   const { title, description, techStack, liveUrl, repoUrl, image, category } = project
 

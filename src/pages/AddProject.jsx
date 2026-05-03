@@ -4,7 +4,7 @@ import './AddProject.css'
 
 const CATEGORIES = ['Frontend', 'Full Stack', 'Backend', 'Mobile', 'Other']
 
-function AddProject() {
+function AddProject({ addProject }) {
   const navigate = useNavigate()
   const [form, setForm] = useState({
     title: '',
@@ -16,6 +16,7 @@ function AddProject() {
     category: 'Frontend',
   })
   const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
 
   const validate = () => {
     const e = {}
@@ -36,19 +37,20 @@ function AddProject() {
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
 
+    setSubmitting(true)
+
     const newProject = {
       ...form,
       techStack: form.techStack.split(',').map(t => t.trim()).filter(Boolean),
       image: form.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80',
     }
 
-    fetch('/api/projects', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newProject)
-    })
-      .then(res => res.json())
+    addProject(newProject)
       .then(() => navigate('/'))
+      .catch(() => {
+        setSubmitting(false)
+        alert('Failed to save project. Is json-server running?')
+      })
   }
 
   return (
@@ -148,8 +150,8 @@ function AddProject() {
           <button type="button" className="btn btn-outline" onClick={() => navigate('/')}>
             Cancel
           </button>
-          <button type="submit" className="btn btn-primary">
-            Add Project →
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
+            {submitting ? 'Saving...' : 'Add Project →'}
           </button>
         </div>
       </form>
